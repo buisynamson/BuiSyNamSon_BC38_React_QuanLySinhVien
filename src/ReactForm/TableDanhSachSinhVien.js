@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { xoaSinhVienAction } from '../redux/actions/BTQuanLySinhVienActions';
-import { XOA_SINH_VIEN } from '../redux/actions/types/BTQuanLySinhVienTypes';
-
 class TableDanhSachSinhVien extends Component {
     
     render() {
@@ -33,9 +31,7 @@ class TableDanhSachSinhVien extends Component {
                                     <td>{sinhVien.soDienThoai}</td>
                                     <td>
                                         <button className="btn btn-danger" onClick={()=> {
-                                            // Cách viết action creator
                                             const action = xoaSinhVienAction(sinhVien.maSV);
-                                            //Gửi dữ liệu lên redux
                                             this.props.dispatch(action);
 
                                         }}>Xoá</button>
@@ -45,7 +41,6 @@ class TableDanhSachSinhVien extends Component {
                                                 type:'CHINH_SUA_SINH_VIEN',
                                                 sinhVien: sinhVien
                                             }
-                                            //Gọi hàm dispatch đưa dữ liệu dòng tr được click lên redux
                                             this.props.dispatch(action);
                                         }}>Chỉnh sửa</button>
 

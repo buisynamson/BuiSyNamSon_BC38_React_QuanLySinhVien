@@ -3,14 +3,14 @@ import { connect } from "react-redux";
 class FormDangKy extends Component {
   state = {
     values: {
-      //Thông tin người dùng nhập
+      //Người dùng nhập
       maSV: "",
       hoTen: "",
       email: "",
       soDienThoai: "",
     },
     errors: {
-      //Thông tin lỗi
+      //Lỗi
       maSV: "",
       hoTen: "",
       email: "",
@@ -19,24 +19,23 @@ class FormDangKy extends Component {
   };
 
   handleChangeInput = (event) => {
-    //Dựa vào biến event sẽ có thể truy xuất được đến các thông tin của thẻ
-    let { id, name, value } = event.target;
-    //Mỗi lần nhập liệu sẽ xử lý 2 phần
-    //Phần 1 values
+
+    let { name, value } = event.target;
+
     let newValues = { ...this.state.values };
     newValues[name] = value;
-    //Phần 2 errors
+
     let newErrors = { ...this.state.errors };
     let messError = "";
-    //Khi người dùng nhập bỏ trống
+    //Check nếu user bỏ trống
     if (value.trim() === "") {
-      messError = name + " không được bỏ trống !";
+      messError = name + " chưa có thông tin!";
     }
     if (event.target.type === "email") {
       let regexEmail =
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       if (!regexEmail.test(value)) {
-        messError = "Email không đúng định dạng";
+        messError = "Email không đúng định dạng!";
       }
     }
 
@@ -49,19 +48,18 @@ class FormDangKy extends Component {
   };
 
   handleSubmit = (event) => {
-    event.preventDefault(); //Cản sự kiện reload browser
+    event.preventDefault(); 
     //validation trước khi submit
     let { values, errors } = this.state;
 
-    let valid = true; //valid = true là form hợp lệ
-    //Kiểm tra tất cả các giá trị {maSV,matKhau,...} trong values xem có hợp lệ không
+    let valid = true; 
     for (let key in values) {
       if (values[key] === "") {
         valid = false;
         break;
       }
     }
-    //Kiểm tra tất cả các giá trị {maSV,matKhau,...} trong error xem có lỗi không
+ 
     for (let key in errors) {
       if (errors[key] !== "") {
         valid = false;
@@ -69,11 +67,11 @@ class FormDangKy extends Component {
       }
     }
     if (!valid) {
-      alert("Dữ liệu nhập không hợp lệ !");
+      alert("Bạn chưa nhập đủ thông tin !");
       return;
     }
 
-    //Gửi giá trị người dùng nhập vào lên redux
+
     const action = {
       type: "THEM_SINH_VIEN",
       sinhVien: this.state.values,
@@ -89,25 +87,13 @@ class FormDangKy extends Component {
       },
     });
   };
-  //Xử lý cách 1 : Can thiệp vào quá trình render component khi thay đổi props
-  // static getDerivedStateFromProps(newProps, currentState) {
-  //     //Chọn thời điểm trước khi render props mới từ redux trả về edit vào state và return về state => component render => render state ra
-  //     //Cần phân định được người dùng bấm chỉnh sửa hay handle change
-  //     // + Nếu bấm chỉnh sửa thì tài khoản sẽ thay đổi
-  //     // + handle change thì tài khoản không thay đổi
-  //     if(newProps.nguoiDungChinhSua.maSV !== currentState.values.maSV) {
-  //         currentState.values = {...newProps.nguoiDungChinhSua}
-  //     }
-  //     return {...currentState};
-  // }
-  //Cách 2 dùng lifecycle cũ chỉ chạy khi props thay đổi trước khi render
+  
   componentWillReceiveProps(newProps) {
-    //Chỉ chạy khi props thay đổi
+    //Chạy khi props thay đổi
     this.setState({
       values: newProps.sinhVienChinhSua,
     });
   }
-  //Cách 3: Không dùng lifecycle tất cả state đều đẩy lên redux
 
   render() {
     let { maSV, hoTen, email, soDienThoai } = this.state.values;
@@ -187,7 +173,6 @@ class FormDangKy extends Component {
                   sinhVien: this.state.values,
                 };
 
-                //Đưa dữ liệu cập nhật người dùng lên redux
                 this.props.dispatch(action);
 
                 this.setState({
