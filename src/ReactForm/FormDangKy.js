@@ -1,5 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import Swal from 'sweetalert2'
+
+
+let profileContent = '';
+let errorsContent = '';
 class FormDangKy extends Component {
   state = {
     values: {
@@ -18,6 +23,7 @@ class FormDangKy extends Component {
     },
   };
 
+  
   handleChangeInput = (event) => {
 
     let { name, value } = event.target;
@@ -51,7 +57,6 @@ class FormDangKy extends Component {
     event.preventDefault(); 
     //validation trước khi submit
     let { values, errors } = this.state;
-
     let valid = true; 
     for (let key in values) {
       if (values[key] === "") {
@@ -67,10 +72,21 @@ class FormDangKy extends Component {
       }
     }
     if (!valid) {
-      alert("Bạn chưa nhập đủ thông tin !");
+      Swal.fire({
+        title: 'Thông tin chưa đầy đủ!',
+        html: errorsContent,
+        icon: 'error', //success, error, warning, question
+        confirmButtonText: 'OK'
+    })
       return;
     }
 
+    Swal.fire({
+      title: 'Thêm thành công!',
+      html: profileContent,
+      icon: 'success', //success, error, warning, question
+      confirmButtonText: 'OK'
+  })
 
     const action = {
       type: "THEM_SINH_VIEN",
@@ -172,9 +188,13 @@ class FormDangKy extends Component {
                   type: "CAP_NHAT_SINH_VIEN",
                   sinhVien: this.state.values,
                 };
-
+                Swal.fire({
+                  title: 'Cập nhật thành công!',
+                  html: profileContent,
+                  icon: 'success',
+                  confirmButtonText: 'OK'
+              })
                 this.props.dispatch(action);
-
                 this.setState({
                   values: {
                     maSV: "",

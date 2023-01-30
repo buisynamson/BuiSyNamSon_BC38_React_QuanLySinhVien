@@ -2,7 +2,7 @@ import { XOA_SINH_VIEN } from "../actions/types/BTQuanLySinhVienTypes";
 
 const stateDefault = {
   mangSV: [],
-  
+
   sinhVienChinhSua: {
     maSV: "",
     hoTen: "",
@@ -10,19 +10,19 @@ const stateDefault = {
     email: "",
   },
 };
+
 export const BTQuanLySVReducer = (state = stateDefault, action) => {
+
   switch (action.type) {
-    case "THEM_SINH_VIEN": {  
+    case "THEM_SINH_VIEN": {
       state.mangSV = [...state.mangSV, action.sinhVien];
       return { ...state };
-
-
     }
     case XOA_SINH_VIEN: {
+
       state.mangSV = [
         ...state.mangSV.filter((sinhVien) => sinhVien.maSV !== action.maSV),
       ];
-
       return { ...state };
     }
 
@@ -33,12 +33,10 @@ export const BTQuanLySVReducer = (state = stateDefault, action) => {
     }
 
     case "CAP_NHAT_SINH_VIEN": {
-
       let sinhVien = state.mangSV.find(
         (sinhVien) => sinhVien.maSV === action.sinhVien.maSV
       );
       if (sinhVien) {
-  
         for (let key in action.sinhVien) {
           sinhVien[key] = action.sinhVien[key];
         }
